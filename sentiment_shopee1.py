@@ -71,49 +71,44 @@ with open('vietnamese-stopwords.txt', 'r', encoding="utf8") as file:
   
 
 def process_text(text, emoji_dict, teen_dict, wrong_lst,english_dict):
-        document = text.lower()
-        document = document.replace("’",'')
-        document = re.sub(r'(\s*[!.?]+\s*)+' , ' . ', document)
-        document = re.sub(r'(\s*\,+\s*)+' , ' , ', document)
-        new_sentence =''
-        for sentence in sent_tokenize(document):
-            # if not(sentence.isascii()):
-            ###### CONVERT EMOJICON
-            sentence = ''.join(' '+emoji_dict[word]+' ' if word in emoji_dict else word for word in list(sentence))
-            ###### CONVERT TEENCODE
-            sentence = ' '.join(teen_dict[word] if word in teen_dict else word for word in sentence.split())
-
-            ###### CONVERT eng-vnm
-            sentence = ' '.join(english_dict[word] if word in english_dict else word for word in sentence.split())
-
-            ###### DEL Punctuation & Numbers
-            pattern = r'(?i)\b[a-záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ]+\b'#|\p{P}'
-            sentence = ' '.join(regex.findall(pattern,sentence))
-            # ...
-            ###### DEL wrong words
-            #sentence = ' '.join('' if word in wrong_lst else word for word in sentence.split())
-            new_sentence = new_sentence+ sentence + '. '
-        document = new_sentence
-        #print(document)
-        ###### DEL excess blank space
-        document = regex.sub(r'\s+', ' ', document).strip()
-        #...
-        return document
+    document = text.lower()
+    document = document.replace("’",'')
+    document = re.sub(r'(\s*[!.?]+\s*)+' , ' . ', document)
+    document = re.sub(r'(\s*\,+\s*)+' , ' , ', document)
+    new_sentence =''
+    for sentence in sent_tokenize(document):
+        # if not(sentence.isascii()):
+        ###### CONVERT EMOJICON
+        sentence = ''.join(' '+emoji_dict[word]+' ' if word in emoji_dict else word for word in list(sentence))
+        ###### CONVERT TEENCODE
+        sentence = ' '.join(teen_dict[word] if word in teen_dict else word for word in sentence.split())
+        ###### CONVERT eng-vnm
+        sentence = ' '.join(english_dict[word] if word in english_dict else word for word in sentence.split())
+        ###### DEL Punctuation & Numbers
+        pattern = r'(?i)\b[a-záàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ]+\b'#|\p{P}'
+        sentence = ' '.join(regex.findall(pattern,sentence))
+        # ...
+        ###### DEL wrong words
+        #sentence = ' '.join('' if word in wrong_lst else word for word in sentence.split())
+        new_sentence = new_sentence+ sentence + '. '
+    document = new_sentence
+    #print(document)
+    ###### DEL excess blank space
+    document = regex.sub(r'\s+', ' ', document).strip()
+    #...
+    return document
 
 def loaddicchar():
-        uniChars = "àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴÂĂĐÔƠƯ"
-        unsignChars = "aaaaaaaaaaaaaaaaaeeeeeeeeeeediiiiiooooooooooooooooouuuuuuuuuuuyyyyyAAAAAAAAAAAAAAAAAEEEEEEEEEEEDIIIOOOOOOOOOOOOOOOOOOOUUUUUUUUUUUYYYYYAADOOU"
-
-        dic = {}
-        char1252 = 'à|á|ả|ã|ạ|ầ|ấ|ẩ|ẫ|ậ|ằ|ắ|ẳ|ẵ|ặ|è|é|ẻ|ẽ|ẹ|ề|ế|ể|ễ|ệ|ì|í|ỉ|ĩ|ị|ò|ó|ỏ|õ|ọ|ồ|ố|ổ|ỗ|ộ|ờ|ớ|ở|ỡ|ợ|ù|ú|ủ|ũ|ụ|ừ|ứ|ử|ữ|ự|ỳ|ý|ỷ|ỹ|ỵ|À|Á|Ả|Ã|Ạ|Ầ|Ấ|Ẩ|Ẫ|Ậ|Ằ|Ắ|Ẳ|Ẵ|Ặ|È|É|Ẻ|Ẽ|Ẹ|Ề|Ế|Ể|Ễ|Ệ|Ì|Í|Ỉ|Ĩ|Ị|Ò|Ó|Ỏ|Õ|Ọ|Ồ|Ố|Ổ|Ỗ|Ộ|Ờ|Ớ|Ở|Ỡ|Ợ|Ù|Ú|Ủ|Ũ|Ụ|Ừ|Ứ|Ử|Ữ|Ự|Ỳ|Ý|Ỷ|Ỹ|Ỵ'.split(
+    uniChars = "àáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴÂĂĐÔƠƯ"
+    unsignChars = "aaaaaaaaaaaaaaaaaeeeeeeeeeeediiiiiooooooooooooooooouuuuuuuuuuuyyyyyAAAAAAAAAAAAAAAAAEEEEEEEEEEEDIIIOOOOOOOOOOOOOOOOOOOUUUUUUUUUUUYYYYYAADOOU"
+    dic = {}
+    char1252 = 'à|á|ả|ã|ạ|ầ|ấ|ẩ|ẫ|ậ|ằ|ắ|ẳ|ẵ|ặ|è|é|ẻ|ẽ|ẹ|ề|ế|ể|ễ|ệ|ì|í|ỉ|ĩ|ị|ò|ó|ỏ|õ|ọ|ồ|ố|ổ|ỗ|ộ|ờ|ớ|ở|ỡ|ợ|ù|ú|ủ|ũ|ụ|ừ|ứ|ử|ữ|ự|ỳ|ý|ỷ|ỹ|ỵ|À|Á|Ả|Ã|Ạ|Ầ|Ấ|Ẩ|Ẫ|Ậ|Ằ|Ắ|Ẳ|Ẵ|Ặ|È|É|Ẻ|Ẽ|Ẹ|Ề|Ế|Ể|Ễ|Ệ|Ì|Í|Ỉ|Ĩ|Ị|Ò|Ó|Ỏ|Õ|Ọ|Ồ|Ố|Ổ|Ỗ|Ộ|Ờ|Ớ|Ở|Ỡ|Ợ|Ù|Ú|Ủ|Ũ|Ụ|Ừ|Ứ|Ử|Ữ|Ự|Ỳ|Ý|Ỷ|Ỹ|Ỵ'.split(
             '|')
-        charutf8 = "à|á|ả|ã|ạ|ầ|ấ|ẩ|ẫ|ậ|ằ|ắ|ẳ|ẵ|ặ|è|é|ẻ|ẽ|ẹ|ề|ế|ể|ễ|ệ|ì|í|ỉ|ĩ|ị|ò|ó|ỏ|õ|ọ|ồ|ố|ổ|ỗ|ộ|ờ|ớ|ở|ỡ|ợ|ù|ú|ủ|ũ|ụ|ừ|ứ|ử|ữ|ự|ỳ|ý|ỷ|ỹ|ỵ|À|Á|Ả|Ã|Ạ|Ầ|Ấ|Ẩ|Ẫ|Ậ|Ằ|Ắ|Ẳ|Ẵ|Ặ|È|É|Ẻ|Ẽ|Ẹ|Ề|Ế|Ể|Ễ|Ệ|Ì|Í|Ỉ|Ĩ|Ị|Ò|Ó|Ỏ|Õ|Ọ|Ồ|Ố|Ổ|Ỗ|Ộ|Ờ|Ớ|Ở|Ỡ|Ợ|Ù|Ú|Ủ|Ũ|Ụ|Ừ|Ứ|Ử|Ữ|Ự|Ỳ|Ý|Ỷ|Ỹ|Ỵ".split(
+    charutf8 = "à|á|ả|ã|ạ|ầ|ấ|ẩ|ẫ|ậ|ằ|ắ|ẳ|ẵ|ặ|è|é|ẻ|ẽ|ẹ|ề|ế|ể|ễ|ệ|ì|í|ỉ|ĩ|ị|ò|ó|ỏ|õ|ọ|ồ|ố|ổ|ỗ|ộ|ờ|ớ|ở|ỡ|ợ|ù|ú|ủ|ũ|ụ|ừ|ứ|ử|ữ|ự|ỳ|ý|ỷ|ỹ|ỵ|À|Á|Ả|Ã|Ạ|Ầ|Ấ|Ẩ|Ẫ|Ậ|Ằ|Ắ|Ẳ|Ẵ|Ặ|È|É|Ẻ|Ẽ|Ẹ|Ề|Ế|Ể|Ễ|Ệ|Ì|Í|Ỉ|Ĩ|Ị|Ò|Ó|Ỏ|Õ|Ọ|Ồ|Ố|Ổ|Ỗ|Ộ|Ờ|Ớ|Ở|Ỡ|Ợ|Ù|Ú|Ủ|Ũ|Ụ|Ừ|Ứ|Ử|Ữ|Ự|Ỳ|Ý|Ỷ|Ỹ|Ỵ".split(
             '|')
-        for i in range(len(char1252)):
-            dic[char1252[i]] = charutf8[i]
-        return dic
-
-
+    for i in range(len(char1252)):
+        dic[char1252[i]] = charutf8[i]
+    return dic
 
 # Đưa toàn bộ dữ liệu qua hàm này để chuẩn hóa lại
 def covert_unicode(txt):
@@ -122,53 +117,50 @@ def covert_unicode(txt):
             r'à|á|ả|ã|ạ|ầ|ấ|ẩ|ẫ|ậ|ằ|ắ|ẳ|ẵ|ặ|è|é|ẻ|ẽ|ẹ|ề|ế|ể|ễ|ệ|ì|í|ỉ|ĩ|ị|ò|ó|ỏ|õ|ọ|ồ|ố|ổ|ỗ|ộ|ờ|ớ|ở|ỡ|ợ|ù|ú|ủ|ũ|ụ|ừ|ứ|ử|ữ|ự|ỳ|ý|ỷ|ỹ|ỵ|À|Á|Ả|Ã|Ạ|Ầ|Ấ|Ẩ|Ẫ|Ậ|Ằ|Ắ|Ẳ|Ẵ|Ặ|È|É|Ẻ|Ẽ|Ẹ|Ề|Ế|Ể|Ễ|Ệ|Ì|Í|Ỉ|Ĩ|Ị|Ò|Ó|Ỏ|Õ|Ọ|Ồ|Ố|Ổ|Ỗ|Ộ|Ờ|Ớ|Ở|Ỡ|Ợ|Ù|Ú|Ủ|Ũ|Ụ|Ừ|Ứ|Ử|Ữ|Ự|Ỳ|Ý|Ỷ|Ỹ|Ỵ',
             lambda x: dicchar[x.group()], txt)
     
-
 def process_special_word(text):
-        # có thể có nhiều từ đặc biệt cần ráp lại với nhau
-        new_text = ''
-        text_lst = text.split()
-        i= 0
-        # không, chẳng, chả...
-        if 'không' in text_lst:
-            while i <= len(text_lst) - 1:
-                word = text_lst[i]
-                #print(word)
-                #print(i)
-                if  word == 'không':
-                    next_idx = i+1
-                    if next_idx <= len(text_lst) -1:
-                        word = word +'_'+ text_lst[next_idx]
-                    i= next_idx + 1
-                else:
-                    i = i+1
-                new_text = new_text + word + ' '
-        else:
-            new_text = text
-        return new_text.strip()
-
-
+    # có thể có nhiều từ đặc biệt cần ráp lại với nhau
+    new_text = ''
+    text_lst = text.split()
+    i= 0
+    # không, chẳng, chả...
+    if 'không' in text_lst:
+        while i <= len(text_lst) - 1:
+            word = text_lst[i]
+            #print(word)
+            #print(i)
+            if  word == 'không':
+                next_idx = i+1
+                if next_idx <= len(text_lst) -1:
+                    word = word +'_'+ text_lst[next_idx]
+                i= next_idx + 1
+            else:
+                i = i+1
+            new_text = new_text + word + ' '
+    else:
+        new_text = text
+    return new_text.strip()
 
 import re
 # Hàm để chuẩn hóa các từ có ký tự lặp
 def normalize_repeated_characters(text):
-        # Thay thế mọi ký tự lặp liên tiếp bằng một ký tự đó
-        # Ví dụ: "ngonnnn" thành "ngon", "thiệtttt" thành "thiệt"
-        return re.sub(r'(.)\1+', r'\1', text)
+    # Thay thế mọi ký tự lặp liên tiếp bằng một ký tự đó
+    # Ví dụ: "ngonnnn" thành "ngon", "thiệtttt" thành "thiệt"
+    return re.sub(r'(.)\1+', r'\1', text)
 
 
 
 def process_postag_thesea(text):
-        new_document = ''
-        for sentence in sent_tokenize(text):
-            sentence = sentence.replace('.','')
-            ###### POS tag
-            lst_word_type = ['N','Np','A','AB','V','VB','VY','R','M']
-            # lst_word_type = ['A','AB','V','VB','VY','R']
-            sentence = ' '.join( word[0] if word[1].upper() in lst_word_type else '' for word in pos_tag(process_special_word(word_tokenize(sentence, format="text"))))
-            new_document = new_document + sentence + ' '
+    new_document = ''
+    for sentence in sent_tokenize(text):
+        sentence = sentence.replace('.','')
+        ###### POS tag
+        lst_word_type = ['N','Np','A','AB','V','VB','VY','R','M']
+        # lst_word_type = ['A','AB','V','VB','VY','R']
+        sentence = ' '.join( word[0] if word[1].upper() in lst_word_type else '' for word in pos_tag(process_special_word(word_tokenize(sentence, format="text"))))
+        new_document = new_document + sentence + ' '
         ###### DEL excess blank space
-        new_document = regex.sub(r'\s+', ' ', new_document).strip()
-        return new_document
+    new_document = regex.sub(r'\s+', ' ', new_document).strip()
+    return new_document
 
 
 
@@ -252,7 +244,6 @@ data['Year'] = data['Date'].dt.year
 with open('pipeline.pkl', 'rb') as file:  
     sent_model = pickle.load(file)
 
-
 #GUI
 st.set_page_config(page_title='Sentiment Analysis', page_icon='📊', layout="centered")
 
@@ -281,6 +272,233 @@ if choice == 'Giới thiệu':
     st.subheader("👩‍💻 Các bước thực hiện")
     st.image('project-10.jpg')
 
+elif choice == 'Phân tích đánh giá':
+    st.subheader("🙂😐☹️ Phân tích đánh giá")
+    st.write("""
+    - Nhập 1 dòng đánh giá hoặc tải lên 1 bảng dữ liệu csv các đánh giá
+    - Ắn nút phân tích, sẽ trả ra kết quả nhận xét đánh giá đó là Positive (Tích cực) hay Negative (Tiêu cực)""")
+    st.markdown("##")
+    
+    st.subheader("Đánh giá")
+    with st.form(key='TextForm'):
+        text = st.text_area("Nhập 1 câu đánh giá vào đây")
+        submit_button = st.form_submit_button(label = 'Phân tích')
+    col1, col2 = st.columns(2)
+    if submit_button:
+        with col1:
+            x_new = clean_text_str(text) 
+            if isinstance(x_new, str):
+                x_new = [x_new] 
+            y_pred_new = sent_model.predict(x_new)       
+            st.write(y_pred_new)
+            if y_pred_new == 0:
+                st.markdown("Negative ☹️")
+            else:
+                st.markdown("Positive 🙂")
+        with col2:
+            if y_pred_new == 0:
+                st.image("sad.png")
+            else:
+                st.image("smile.png")
+
+    st.subheader('Tải tệp')
+    with st.form(key='dfform'):
+        # Upload file
+        uploaded_file = st.file_uploader("Tải tệp", type=['csv'])
+        submit_button = st.form_submit_button(label = 'Phân tích')
+        if uploaded_file is not None:
+            st.markdown('---')
+            df = pd.read_csv(uploaded_file, header=None,)
+            st.markdown('Đánh giá của người dùng')
+            st.dataframe(df)
+            lines = df.iloc[:, 0]    
+            if len(lines)>0:
+                cleaned_lines = [clean_text_str(str(line)) for line in lines]             
+                y_pred_new = sent_model.predict(cleaned_lines)
+                df['Sentiment'] = y_pred_new
+                df['Trạng thái'] = [predict_sentiment(text) for text in y_pred_new]
+                st.markdown('Trạng thái đánh giá')
+                st.dataframe(df)
+
+elif  choice == 'Thông tin nhà hàng':
+    data_res = pd.read_csv('df_restaurants_fn.csv')
+    res = st.multiselect(
+                        "Lựa chọn nhà hàng:", 
+                        options = data_res["Restaurant"].unique(),
+                        max_selections = 1)
+    if res:
+        df_selection = data_res.query("Restaurant == @res")
+        df_selection2 = data.query("Restaurant == @res")
+
+        if df_selection.empty:
+            st.warning("Chọn 1 nhà hàng từ hộp chọn trên")
+        else:
+            st.title(":bar_chart: Thông tin nhà hàng")
+            st.markdown("##")
+
+            name = df_selection["Restaurant"].values[0]
+            rating_score = df_selection["Sentiment"].values[0]
+            star_rating = round(df_selection["Rating"].values[0], 1)
+            rating = '⭐️' * int(round(df_selection["Rating"].values[0], 0))
+            price = df_selection["Price"].values[0]
+            time = df_selection["Open_Time"].values[0]
+            pos = df_selection["Positive"].values[0]
+            neg = df_selection["Negative"].values[0]
+            neu = df_selection["Neutral"].values[0]
+            dis = df_selection["District"].values[0]
+            add = df_selection["Address"].values[0]
+            max_hour = df_selection["Most_Reviewed_Hour"].values[0]
+            min_hour = df_selection["Min_Reviewed_Hour"].values[0]
+            total_rat = int(pos + neg + neu)
+
+            st.markdown(
+                f"""
+                <div style="text-align: center;">
+                    <h1 style="margin-bottom: 0;">{name}</h1>
+                </div>
+                """, 
+                unsafe_allow_html=True)
+
+            leftcol1, rightcol1 = st.columns(2)
+            with leftcol1:  
+                st.markdown(
+                f"""
+                <div style="text-align: center;">
+                    <h1>{star_rating}</h1>
+                    <h4>{rating}</h4>
+                    <p><strong>{total_rat} đánh giá</strong></p>
+                </div>
+                """, 
+                unsafe_allow_html=True)
+            with rightcol1:
+                df_plot_rat = df_selection.groupby(['Restaurant']).sum()[['9-10', '7-8', '5-6', '3-4', '1-2']]
+                for restaurant, row in df_plot_rat.iterrows():
+                    plt.figure(figsize=(12, 6))  # Adjust figure size as needed
+                    plt.barh(row.index, row.values, color=['#F9C70C'])
+                    plt.xticks(np.arange(len(row)), [])  # Hide x-axis ticks
+                    plt.gca().invert_yaxis()  # Invert y-axis to have the highest bar at the top
+                    plt.box(False)
+                    plt.gca().set_facecolor('none')
+                    st.pyplot(plt)
+            
+            st.markdown(
+                f"""
+                <div style="text-align: center;">
+                    <h3>📍 Địa chỉ</h3>
+                    <h3>{add}</h3>
+                </div>
+                """, 
+                unsafe_allow_html=True)
+
+            leftcol2, rightcol2 = st.columns([1.2, 1])
+            with leftcol2:  
+                st.markdown(
+                    f"""
+                        <h4>🕒Giờ hoạt động: {time}</h4>
+                    """, 
+                    unsafe_allow_html=True)
+            with rightcol2:  
+                st.markdown(
+                    f"""
+                        <h4>🏷️Giá: {price}</h4>
+                    """,
+                    unsafe_allow_html=True)
+                
+            leftcol3, rightcol3 = st.columns([1.2, 1])
+            with leftcol2: 
+                st.markdown(
+                    f"""
+                        <h4>🔼Đánh giá nhiều nhất: {max_hour} giờ</h4>
+                    """, 
+                    unsafe_allow_html=True)
+            with rightcol2:
+                st.markdown(
+                    f"""
+                        <h4>🔽Đánh giá ít nhất: {min_hour} giờ</h4>
+                    """, 
+                    unsafe_allow_html=True)
+            st.markdown("""---""")
+
+            left_col4, right_col4 = st.columns(2)
+            with left_col4:
+                st.subheader(f"☹️Negative: {neg} đánh giá")
+                st.subheader(f"😊Positive: {pos} đánh giá")
+                st.subheader(f"😐Neutral: {neu} đánh giá")
+            with right_col4:
+                df_plot_sent = df_selection.groupby(['Restaurant']).sum()[['Positive', 'Negative', 'Neutral']]
+                for restaurant, row in df_plot_sent.iterrows():
+                    plt.figure(figsize=(2, 2))
+                    plt.pie(row, labels=row.index, autopct='%1.1f%%', startangle=90, wedgeprops={'edgecolor': 'none'}, colors=['#66b3ff', '#ff9999', '#99ff99'], textprops={'fontsize': 8})
+                    plt.gca().set_facecolor('none')
+                    st.pyplot(plt)
+            st.markdown("""---""")
+
+            left_col5, right_col5 = st.columns(2)
+            with left_col5:
+                st.subheader("Đánh giá Positive")
+                pos_text = df_selection["comment_positive"].values[0]
+                pw = WordCloud(width=400, height=200, background_color='white').generate(pos_text)
+                plt.figure(figsize=(10, 5))
+                plt.imshow(pw, interpolation='bilinear')
+                plt.axis('off')
+                st.pyplot(plt)
+            with right_col5:
+                st.subheader("Đánh giá Negative")
+                neg_text = df_selection["comment_negative"].values[0]
+                nw = WordCloud(width=400, height=200, background_color='white').generate(neg_text)
+                plt.figure(figsize=(10, 5))
+                plt.imshow(nw, interpolation='bilinear')
+                plt.axis('off')
+                st.pyplot(plt)
+
+            left_col6, right_col6 = st.columns(2)
+            with left_col6:
+                df_pos_cm = df_selection2[(df_selection2['Sentiment'] == 'Positive')]
+                df_pos_cm = df_pos_cm[['User', 'Time', 'Comment']]
+                st.dataframe(df_pos_cm)
+            with right_col6:
+                df_neg_cm = df_selection2[(df_selection2['Sentiment'] == 'Negative')]
+                df_neg_cm = df_neg_cm[['User', 'Time', 'Comment']]
+                st.dataframe(df_neg_cm)
+
+            # Plotting function
+            def plot_sentiment_rating_trend(df_selection2, data):
+                df_sub = data[data['Restaurant'] == df_selection2["Restaurant"].values[0]]
+                grb = df_sub.groupby(['Year', 'Month']).agg({
+                    'Sentiment': [('Positive', lambda x: (x == 'Positive').sum()),
+                                ('Negative', lambda x: (x == 'Negative').sum())],
+                    'Comment': 'count',
+                    'Rating': 'mean'
+                }).reset_index()
+                grb.columns = ['Year', 'Month', 'Positive', 'Negative', 'num_comment', 'Rating']
+                grb = grb.sort_values(by=['Year', 'Month'])
+                grb['DateTime'] = pd.to_datetime(grb['Month'].astype(str) + '/' + grb['Year'].astype(str), format='%m/%Y')
+
+                plt.figure(figsize=(10, 6))
+                plt.plot(grb['DateTime'], grb['Rating'], marker='o', markersize=3, color='green')
+                plt.title('Biểu đồ Rating trung bình theo thời gian')
+                plt.xlabel('Thời gian')
+                plt.ylabel('Rating')
+                plt.ylim(0, 11)
+                plt.xticks(rotation=45)
+                plt.tight_layout()
+                st.pyplot(plt)
+
+                plt.figure(figsize=(10, 6))
+                plt.plot(grb['DateTime'], grb['Positive'], label='Positive', color='green', marker='o', markersize=3)
+                plt.plot(grb['DateTime'], grb['Negative'], label='Negative', color='red', marker='o', markersize=3)
+                plt.title('Biểu đồ các loại Sentiment theo thời gian')
+                plt.xlabel('Thời gian')
+                plt.ylabel('Số lượng')
+                plt.legend()
+                plt.xticks(rotation=45)
+                plt.tight_layout()
+                st.pyplot(plt)
+
+            plot_sentiment_rating_trend(df_selection2, data)
+    else:
+        st.warning("Chọn 1 nhà hàng từ hộp chọn trên")
+
 elif choice == 'Xem thêm':
     data_review = pd.read_csv('data_review_merge.csv')
     restaurant = pd.read_csv('1_Restaurants.csv')
@@ -297,8 +515,7 @@ elif choice == 'Xem thêm':
                     <h3 style="margin-bottom: 0;">1_Restaurants</h3>
                 </div>
                 """, 
-                unsafe_allow_html=True
-            )
+                unsafe_allow_html=True)
     st.dataframe(restaurant)
     st.markdown(
                 f"""
@@ -306,8 +523,7 @@ elif choice == 'Xem thêm':
                     <h3 style="margin-bottom: 0;">2_Reviews</h3>
                 </div>
                 """, 
-                unsafe_allow_html=True
-            )
+                unsafe_allow_html=True)
     st.dataframe(review)
     st.markdown(f"**Tổng số lượng nhà hàng: {len(list(restaurant['Restaurant'].value_counts().index))}**")
 
@@ -389,7 +605,6 @@ elif choice == 'Xem thêm':
         st.subheader('XGBClassifier')
         st.image('XGB.JPG')
 
-
     st.write("**Nhận xét và lựa chọn mô hình**")
     st.write("""
     - Do dữ liệu bị mất cân bằng, Precision Score có thể sẽ thấp, ta có thể chỉ xem Recall Score và Accuracy Score để đánh giá
@@ -397,234 +612,3 @@ elif choice == 'Xem thêm':
     - Chỉ số Recall cho 2 nhãn đều khá cao (0.8 ~ 0.9), Accuracy Score đạt 0.88
     - Hơn nữa so sánh trực quan Cofusion Matrix cho thấy nhãn Positive và Negative dự đoán được tốt nhất trong tất cả các mô hình trên
     - Do đó ta sẽ chọn Mô hình SVC với kernel='rbf' RandomUnderSampling để dự đoán trên toàn bộ dữ liệu""")
-
-
-elif choice == 'Phân tích đánh giá':
-    st.subheader("🙂😐☹️ Phân tích đánh giá")
-    st.write("""
-    - Nhập 1 dòng đánh giá hoặc tải lên 1 bảng dữ liệu csv các đánh giá
-    - Ắn nút phân tích, sẽ trả ra kết quả nhận xét đánh giá đó là Positive (Tích cực) hay Negative (Tiêu cực)""")
-    st.markdown("##")
-    st.subheader("Đánh giá")
-    with st.form(key='TextForm'):
-        text = st.text_area("Nhập 1 câu đánh giá vào đây")
-        submit_button = st.form_submit_button(label = 'Phân tích')
-    col1, col2 = st.columns(2)
-    if submit_button:
-        with col1:
-            x_new = clean_text_str(text) 
-            if isinstance(x_new, str):
-                x_new = [x_new] 
-            y_pred_new = sent_model.predict(x_new)       
-            st.write(y_pred_new)
-            if y_pred_new == 0:
-                st.markdown("Negative ☹️")
-            else:
-                st.markdown("Positive 🙂")
-        with col2:
-            if y_pred_new == 0:
-                st.image("sad.png")
-            else:
-                st.image("smile.png")
-
-    st.subheader('Tải tệp')
-    with st.form(key='dfform'):
-        # Upload file
-        uploaded_file = st.file_uploader("Tải tệp", type=['csv'])
-        submit_button = st.form_submit_button(label = 'Phân tích')
-        if uploaded_file is not None:
-            st.markdown('---')
-            df = pd.read_csv(uploaded_file, header=None,)
-            st.markdown('Đánh giá của người dùng')
-            st.dataframe(df)
-            lines = df.iloc[:, 0]    
-            if len(lines)>0:
-                cleaned_lines = [clean_text_str(str(line)) for line in lines]             
-                y_pred_new = sent_model.predict(cleaned_lines)
-                df['Sentiment'] = y_pred_new
-                df['Trạng thái'] = [predict_sentiment(text) for text in y_pred_new]
-                st.markdown('Trạng thái đánh giá')
-                st.dataframe(df)       
-
-
-elif  choice == 'Thông tin nhà hàng':
-    data_res = pd.read_csv('df_restaurants_fn.csv')
-    res = st.multiselect(
-                        "Lựa chọn nhà hàng:", 
-                        options = data_res["Restaurant"].unique(),
-                        max_selections = 1)
-    if res:
-        df_selection = data_res.query("Restaurant == @res")
-        df_selection2 = data.query("Restaurant == @res")
-
-        if df_selection.empty:
-            st.warning("Chọn 1 nhà hàng từ hộp chọn trên")
-        else:
-            st.title(":bar_chart: Thông tin nhà hàng")
-            st.markdown("##")
-
-            name = df_selection["Restaurant"].values[0]
-            rating_score = df_selection["Sentiment"].values[0]
-            star_rating = round(df_selection["Rating"].values[0], 1)
-            rating = '⭐️' * int(round(df_selection["Rating"].values[0], 0))
-            price = df_selection["Price"].values[0]
-            time = df_selection["Open_Time"].values[0]
-            pos = df_selection["Positive"].values[0]
-            neg = df_selection["Negative"].values[0]
-            neu = df_selection["Neutral"].values[0]
-            dis = df_selection["District"].values[0]
-            add = df_selection["Address"].values[0]
-            max_hour = df_selection["Most_Reviewed_Hour"].values[0]
-            min_hour = df_selection["Min_Reviewed_Hour"].values[0]
-            total_rat = int(pos + neg + neu)
-
-            st.markdown(
-                f"""
-                <div style="text-align: center;">
-                    <h1 style="margin-bottom: 0;">{name}</h1>
-                </div>
-                """, 
-                unsafe_allow_html=True
-            )
-
-            leftcol1, rightcol1 = st.columns(2)
-            with leftcol1:  
-                st.markdown(
-                f"""
-                <div style="text-align: center;">
-                    <h1>{star_rating}</h1>
-                    <h4>{rating}</h4>
-                    <p><strong>{total_rat} đánh giá</strong></p>
-                </div>
-                """, 
-                unsafe_allow_html=True)
-            with rightcol1:
-                df_plot_rat = df_selection.groupby(['Restaurant']).sum()[['9-10', '7-8', '5-6', '3-4', '1-2']]
-                for restaurant, row in df_plot_rat.iterrows():
-                    plt.figure(figsize=(12, 6))  # Adjust figure size as needed
-                    plt.barh(row.index, row.values, color=['#F9C70C'])
-                    plt.xticks(np.arange(len(row)), [])  # Hide x-axis ticks
-                    plt.gca().invert_yaxis()  # Invert y-axis to have the highest bar at the top
-                    plt.box(False)
-                    plt.gca().set_facecolor('none')
-                    st.pyplot(plt)
-            
-            st.markdown(
-                f"""
-                <div style="text-align: center;">
-                    <h3>📍 Địa chỉ</h3>
-                    <h3>{add}</h3>
-                </div>
-                """, 
-                unsafe_allow_html=True)
-
-            leftcol2, rightcol2 = st.columns([1.2, 1])
-            with leftcol2:  
-                st.markdown(
-                    f"""
-                        <h4>🕒Giờ hoạt động: {time}</h4>
-                    """, 
-                    unsafe_allow_html=True)
-            with rightcol2:  
-                st.markdown(
-                    f"""
-                        <h4>🏷️Giá: {price}</h4>
-                    """,
-                    unsafe_allow_html=True)
-                
-            leftcol3, rightcol3 = st.columns([1.2, 1])
-            with leftcol2: 
-                st.markdown(
-                    f"""
-                        <h4>🔼Đánh giá nhiều nhất: {max_hour} giờ</h4>
-                    """, 
-                    unsafe_allow_html=True
-                )
-            with rightcol2:
-                st.markdown(
-                    f"""
-                        <h4>🔽Đánh giá ít nhất: {min_hour} giờ</h4>
-                    """, 
-                    unsafe_allow_html=True)
-            st.markdown("""---""")
-
-            left_col4, right_col4 = st.columns(2)
-            with left_col4:
-                st.subheader(f"☹️Negative: {neg} đánh giá")
-                st.subheader(f"😊Positive: {pos} đánh giá")
-                st.subheader(f"😐Neutral: {neu} đánh giá")
-            with right_col4:
-                df_plot_sent = df_selection.groupby(['Restaurant']).sum()[['Positive', 'Negative', 'Neutral']]
-                for restaurant, row in df_plot_sent.iterrows():
-                    plt.figure(figsize=(2, 2))
-                    plt.pie(row, labels=row.index, autopct='%1.1f%%', startangle=90, wedgeprops={'edgecolor': 'none'}, colors=['#66b3ff', '#ff9999', '#99ff99'], textprops={'fontsize': 8})
-                    plt.gca().set_facecolor('none')
-                    st.pyplot(plt)
-            st.markdown("""---""")
-
-            left_col5, right_col5 = st.columns(2)
-            with left_col5:
-                st.subheader("Đánh giá Positive")
-                pos_text = df_selection["comment_positive"].values[0]
-                pw = WordCloud(width=400, height=200, background_color='white').generate(pos_text)
-                plt.figure(figsize=(10, 5))
-                plt.imshow(pw, interpolation='bilinear')
-                plt.axis('off')
-                st.pyplot(plt)
-            with right_col5:
-                st.subheader("Đánh giá Negative")
-                neg_text = df_selection["comment_negative"].values[0]
-                nw = WordCloud(width=400, height=200, background_color='white').generate(neg_text)
-                plt.figure(figsize=(10, 5))
-                plt.imshow(nw, interpolation='bilinear')
-                plt.axis('off')
-                st.pyplot(plt)
-
-            left_col6, right_col6 = st.columns(2)
-            with left_col6:
-                df_pos_cm = df_selection2[(df_selection2['Sentiment'] == 'Positive')]
-                df_pos_cm = df_pos_cm[['User', 'Time', 'Comment']]
-                st.dataframe(df_pos_cm)
-            with right_col6:
-                df_neg_cm = df_selection2[(df_selection2['Sentiment'] == 'Negative')]
-                df_neg_cm = df_neg_cm[['User', 'Time', 'Comment']]
-                st.dataframe(df_neg_cm)
-
-
-            # Plotting function
-            def plot_sentiment_rating_trend(df_selection2, data):
-                df_sub = data[data['Restaurant'] == df_selection2["Restaurant"].values[0]]
-                grb = df_sub.groupby(['Year', 'Month']).agg({
-                    'Sentiment': [('Positive', lambda x: (x == 'Positive').sum()),
-                                ('Negative', lambda x: (x == 'Negative').sum())],
-                    'Comment': 'count',
-                    'Rating': 'mean'
-                }).reset_index()
-                grb.columns = ['Year', 'Month', 'Positive', 'Negative', 'num_comment', 'Rating']
-                grb = grb.sort_values(by=['Year', 'Month'])
-                grb['DateTime'] = pd.to_datetime(grb['Month'].astype(str) + '/' + grb['Year'].astype(str), format='%m/%Y')
-
-                plt.figure(figsize=(10, 6))
-                plt.plot(grb['DateTime'], grb['Rating'], marker='o', markersize=3, color='green')
-                plt.title('Biểu đồ Rating trung bình theo thời gian')
-                plt.xlabel('Thời gian')
-                plt.ylabel('Rating')
-                plt.ylim(0, 11)
-                plt.xticks(rotation=45)
-                plt.tight_layout()
-                st.pyplot(plt)
-
-                plt.figure(figsize=(10, 6))
-                plt.plot(grb['DateTime'], grb['Positive'], label='Positive', color='green', marker='o', markersize=3)
-                plt.plot(grb['DateTime'], grb['Negative'], label='Negative', color='red', marker='o', markersize=3)
-                plt.title('Biểu đồ các loại Sentiment theo thời gian')
-                plt.xlabel('Thời gian')
-                plt.ylabel('Số lượng')
-                plt.legend()
-                plt.xticks(rotation=45)
-                plt.tight_layout()
-                st.pyplot(plt)
-
-            plot_sentiment_rating_trend(df_selection2, data)
-    else:
-        st.warning("Chọn 1 nhà hàng từ hộp chọn trên")
